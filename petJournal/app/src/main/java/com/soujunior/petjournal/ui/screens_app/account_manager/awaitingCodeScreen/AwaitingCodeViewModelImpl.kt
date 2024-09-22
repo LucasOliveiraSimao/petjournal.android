@@ -20,8 +20,10 @@ class AwaitingCodeViewModelImpl(
     private val forgotPasswordUseCase: ForgotPasswordUseCase
 ) : AwaitingCodeViewModel() {
 
-    private val _state = MutableStateFlow(com.soujunior.petjournal.ui.screens_app.account_manager.awaitingCodeScreen.AwaitingCodeFormState())
-    override val state: StateFlow<com.soujunior.petjournal.ui.screens_app.account_manager.awaitingCodeScreen.AwaitingCodeFormState> = _state
+    private val _state =
+        MutableStateFlow(AwaitingCodeFormState())
+    override val state: StateFlow<AwaitingCodeFormState> =
+        _state
 
     private val _buttonIsEnable = MutableStateFlow(false)
     override val buttonIsEnable: StateFlow<Boolean> = _buttonIsEnable
@@ -47,12 +49,12 @@ class AwaitingCodeViewModelImpl(
         }
     }
 
-    override fun onEvent(event: com.soujunior.petjournal.ui.screens_app.account_manager.awaitingCodeScreen.AwaitingCodeFormEvent) {
+    override fun onEvent(event: AwaitingCodeFormEvent) {
         when (event) {
-            is com.soujunior.petjournal.ui.screens_app.account_manager.awaitingCodeScreen.AwaitingCodeFormEvent.CodeOTPChanged -> changeCode(event.code)
-            is com.soujunior.petjournal.ui.screens_app.account_manager.awaitingCodeScreen.AwaitingCodeFormEvent.EmailChanged -> changeEmail(event.email)
-            is com.soujunior.petjournal.ui.screens_app.account_manager.awaitingCodeScreen.AwaitingCodeFormEvent.Submit -> postOtpVerification()
-            is com.soujunior.petjournal.ui.screens_app.account_manager.awaitingCodeScreen.AwaitingCodeFormEvent.ResendCode -> resendOtpVerification()
+            is AwaitingCodeFormEvent.CodeOTPChanged -> changeCode(event.code)
+            is AwaitingCodeFormEvent.EmailChanged -> changeEmail(event.email)
+            is AwaitingCodeFormEvent.Submit -> postOtpVerification()
+            is AwaitingCodeFormEvent.ResendCode -> resendOtpVerification()
         }
     }
 
