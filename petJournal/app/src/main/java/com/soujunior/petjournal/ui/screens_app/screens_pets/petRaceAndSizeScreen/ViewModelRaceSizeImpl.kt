@@ -183,7 +183,7 @@ class ViewModelRaceSizeImpl(
         _taskState.value = TaskState.Loading
         viewModelScope.launch {
             val petInformation = PetInformationModel(
-                id = state.idPetInformation ?: 0L,
+                id = state.idPetInformation ?: "0L",
                 species = state.specie,
                 name = state.name,
                 gender = state.gender,

@@ -23,7 +23,7 @@ abstract class BirthDateViewModel : ViewModel(){
     abstract fun enableButton(): Boolean
     abstract fun change(
         petBirth: String? = null,
-        idPetInformation: Long? = null,
+        idPetInformation: String? = null,
         petCastration: Boolean? = null
     )
     abstract fun getPetInformation(id: Long)

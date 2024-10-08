@@ -25,5 +25,5 @@ abstract class ViewModelRegisteredPets : ViewModel() {
     abstract fun onEvent(event: RegisteredPetFormEvent)
 
     abstract fun getAllPetInformation()
-    abstract fun deletePetInformation(petId: Long)
+    abstract fun deletePetInformation(petId: String)
 }

@@ -11,6 +11,7 @@ import com.soujunior.domain.model.PetInformationModel
 import com.soujunior.domain.model.request.PetRaceItemModel
 import com.soujunior.domain.model.request.PetSizeItemModel
 import com.soujunior.domain.model.response.GuardianNameResponse
+import com.soujunior.domain.model.response.PetInformationDeleted
 import com.soujunior.domain.model.response.pet_information.PetInformationItem
 import com.soujunior.domain.network.NetworkResult
 import com.soujunior.domain.network.onError
@@ -80,12 +81,22 @@ class GuardianRepositoryImpl(
         }
     }
 
-    override suspend fun deletePetInformation(idPetInformation: Long): DataResult<Unit> {
+    override suspend fun deletePetInformation(idPetInformation: String): NetworkResult<PetInformationDeleted> {
         return try {
-            DataResult.Success(guardianLocalDataSourceImpl.deletePetInformation(idPetInformation).success.data)
+            Log.i("MyTag","idPetInformation: $idPetInformation")
+            val token = "Bearer " + jwtManager.getToken()
+            val apiResult = guardianApi.deletePetInformation(token, idPetInformation.toString())
+            apiResult.onSuccess {
+                Log.i("MyTag","apiResult: ${it.petId!!.toLong()}")
+                guardianLocalDataSourceImpl.deletePetInformation(it.petId!!.toLong())
+                return@onSuccess
+            }
+
         } catch (e: Throwable) {
-            DataResult.Failure(e)
+            NetworkResult.Exception(e)
+
         }
+
     }
 
     override suspend fun getListPetSizes(petSpecie: String): NetworkResult<List<PetSizeItemModel>> {

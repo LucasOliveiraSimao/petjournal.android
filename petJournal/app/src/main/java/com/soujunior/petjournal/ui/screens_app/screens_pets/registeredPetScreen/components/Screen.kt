@@ -1,5 +1,6 @@
 package com.soujunior.petjournal.ui.screens_app.screens_pets.registeredPetScreen.components
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
@@ -43,7 +44,7 @@ fun Screen(navController: NavController){
     val viewModel : ViewModelRegisteredPets = getViewModel()
     val taskState by viewModel.taskState.collectAsState()
     var showDeleteDialog by remember { mutableStateOf(false) }
-    var actualPetId : Long by remember { mutableStateOf(0) }
+    var actualPetId : String by remember { mutableStateOf("") }
 
     ScaffoldCustom( modifier = Modifier.navigationBarsPadding(),
         navigationUp = navController,
@@ -99,7 +100,8 @@ fun Screen(navController: NavController){
                                         /*Abrir Tela do Pet*/
                                     },
                                         onLongClick = {
-                                            actualPetId = 1
+                                            actualPetId = item.id!!
+                                            Log.i("MyTag","actualPetId: ${item.id}")
                                             showDeleteDialog = true
                                         })
                             )

@@ -3,7 +3,7 @@ package com.soujunior.domain.model
 import java.time.LocalDate
 
 data class PetInformationModel(
-    val id: Long,
+    val id: String,
     val species: String? = null,
     val name: String? = null,
     val gender: String? = null,

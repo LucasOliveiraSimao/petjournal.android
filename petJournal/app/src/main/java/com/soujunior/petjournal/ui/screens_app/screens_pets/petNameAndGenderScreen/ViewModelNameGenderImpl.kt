@@ -65,7 +65,7 @@ class ViewModelNameGenderImpl(
         return state.nameError.isNullOrEmpty() && state.genderError.isNullOrEmpty()
     }
 
-    override fun change(petName: String?, petGender: String?, idPetInformation: Long?) {
+    override fun change(petName: String?, petGender: String?, idPetInformation: String?) {
         when {
             petName != null -> {
                 state = state.copy(name = petName)
@@ -93,7 +93,7 @@ class ViewModelNameGenderImpl(
             val result = getPetInformationUseCase.execute(id)
             result.handleResult({
                 state = state.copy(
-                    specie = it.species ?: "",
+                    specie = it.species ?: "0L",
                     idPetInformation = it.id
                 )
             }, ::failed)
@@ -107,7 +107,7 @@ class ViewModelNameGenderImpl(
         _taskState.value = TaskState.Loading
         viewModelScope.launch {
             val petInformation = PetInformationModel(
-                id = state.idPetInformation ?: 0L,
+                id = state.idPetInformation ?: "0L",
                 species = state.specie,
                 name = state.name,
                 gender = state.gender,

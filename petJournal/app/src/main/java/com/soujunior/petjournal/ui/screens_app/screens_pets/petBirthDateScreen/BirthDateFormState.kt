@@ -4,7 +4,7 @@ data class BirthDateFormState(
     val birth: String = "",
     val birthError: List<String>? = null,
     val specie: String = "",
-    val idPetInformation: Long? = null,
+    val idPetInformation: String? = null,
     val name: String = "",
     val gender: String = "",
     val size: String = "",

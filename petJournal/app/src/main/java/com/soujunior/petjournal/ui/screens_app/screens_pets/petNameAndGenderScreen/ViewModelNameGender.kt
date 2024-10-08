@@ -21,7 +21,7 @@ abstract class ViewModelNameGender : ViewModel() {
     abstract fun change(
         petName: String? = null,
         petGender: String? = null,
-        idPetInformation: Long? = null
+        idPetInformation: String? = null
     )
 
     abstract fun getPetInformation(id: Long)

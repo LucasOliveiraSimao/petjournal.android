@@ -103,7 +103,7 @@ class ViewModelChoiceSpeciesImpl(
     override fun savePetInformation(specie: String) {
 
         val petInformation = PetInformationModel(
-            id = 0,
+            id = "0",
             species = specie
         )
         _taskState.value = TaskState.Loading

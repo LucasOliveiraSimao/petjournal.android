@@ -3,11 +3,12 @@ package com.soujunior.data.remote
 import com.soujunior.domain.model.request.PetRaceItemModel
 import com.soujunior.domain.model.request.PetSizeItemModel
 import com.soujunior.domain.model.response.GuardianNameResponse
+import com.soujunior.domain.model.response.PetInformationDeleted
 import com.soujunior.domain.model.response.PetInformationResponse
 import com.soujunior.domain.model.response.pet_information.PetInformationItem
 import com.soujunior.domain.network.NetworkResult
-import com.soujunior.domain.use_case.base.DataResult
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -39,4 +40,10 @@ interface GuardianService {
     suspend fun getAllPetInformation(
         @Header("Authorization") token: String
     ): NetworkResult<List<PetInformationItem>>
+
+    @DELETE("api/pet/{petId}")
+    suspend fun deletePetInformation(
+        @Header("Authorization") token: String,
+        @Path("petId") petId: String
+    ): NetworkResult<PetInformationDeleted>
 }
