@@ -4,26 +4,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
-import com.soujunior.domain.model.PetInformationModel
-import com.soujunior.domain.model.response.PetInformationResponse
 import com.soujunior.domain.model.response.pet_information.PetInformationItem
 import com.soujunior.domain.repository.ValidationRepository
+import com.soujunior.domain.use_case.pet.DeleteAllPetInformationUseCase
 import com.soujunior.domain.use_case.pet.DeletePetInformationUseCase
 import com.soujunior.domain.use_case.pet.GetAllPetInformationUseCase
 import com.soujunior.petjournal.ui.appArea.pets.registeredPetScreen.RegisteredPetFormEvent
 import com.soujunior.petjournal.ui.states.TaskState
 import com.soujunior.petjournal.ui.util.ValidationEvent
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class ViewModelRegisteredPetsImpl(
     val validation: ValidationRepository,
     private val getAllPetInformationUseCase: GetAllPetInformationUseCase,
-    private val deletePetInformationUseCase: DeletePetInformationUseCase
+    private val deletePetInformationUseCase: DeletePetInformationUseCase,
+    private val deleteAllPetInformationUseCase: DeleteAllPetInformationUseCase
 ) : ViewModelRegisteredPets() {
 
     override val validationEventChannel get() = Channel<ValidationEvent>()
@@ -34,7 +32,6 @@ class ViewModelRegisteredPetsImpl(
     override var state by mutableStateOf(RegisteredPetFormState())
 
 
-    //    override var registeredPets by mutableStateOf<List<PetInformationModel>>(emptyList())
     init {
         _taskState.value = TaskState.Loading
         getAllPetInformation()
@@ -85,6 +82,14 @@ class ViewModelRegisteredPetsImpl(
                     validationEventChannel.send(ValidationEvent.Success)
                 }
             }, ::failed)
+            _taskState.value = TaskState.Idle
+        }
+    }
+
+    override fun deleteAllPetInformation() {
+        viewModelScope.launch {
+            _taskState.value = TaskState.Loading
+            deleteAllPetInformationUseCase.execute(Unit)
             _taskState.value = TaskState.Idle
         }
     }

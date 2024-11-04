@@ -26,4 +26,5 @@ abstract class ViewModelRegisteredPets : ViewModel() {
 
     abstract fun getAllPetInformation()
     abstract fun deletePetInformation(petId: String)
+    abstract fun deleteAllPetInformation()
 }

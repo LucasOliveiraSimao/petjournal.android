@@ -54,8 +54,8 @@ fun Screen(idPetInformation: String?, navController: NavController) {
     val taskState by viewModel.taskState.collectAsState()
     val isTextFiledOthersVisible by viewModel.isTextFiledOthersVisible.collectAsState()
     if (idPetInformation != null) {
-        viewModel.getPetInformation(idPetInformation.toLong())
-        RaceSizeFormEvent.IdPetInformation(idPetInformation = idPetInformation.toLong())
+        viewModel.getPetInformation(idPetInformation)
+        RaceSizeFormEvent.IdPetInformation(idPetInformation = idPetInformation)
     }
     val scrollState = rememberLazyListState()
     val screenHeight = getScreenHeightInch()
@@ -99,7 +99,6 @@ fun Screen(idPetInformation: String?, navController: NavController) {
                                 Breadcrumb(index = 2)
                             }
                             item {
-
                                 Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -114,7 +113,6 @@ fun Screen(idPetInformation: String?, navController: NavController) {
                                 }
 
                             }
-
 
                             item {
                                 DropDown(

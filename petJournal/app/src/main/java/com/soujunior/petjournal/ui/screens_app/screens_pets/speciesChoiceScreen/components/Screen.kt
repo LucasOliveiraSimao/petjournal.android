@@ -53,20 +53,6 @@ fun Screen(navController: NavController) {
     var isOthersFieldVisible by remember { mutableStateOf(false) }
     var isClearSpecies by remember { mutableStateOf(false) }
     var speciesName: String? = null
-    val context = LocalContext.current
-    LaunchedEffect(context) {
-        viewModel.validationEvents.collect { event ->
-            when (event) {
-                is ValidationEvent.Success -> {
-                    navController.navigate("pets/nameAndGender/${viewModel.state.idRoomPetInformation}")
-                }
-                is ValidationEvent.Failed -> {
-                    Log.i(TAG, viewModel.state.idRoomPetInformation.toString())
-                }
-            }
-        }
-    }
-
 
     Column(modifier = Modifier.navigationBarsPadding()) {
         ScaffoldCustom(
@@ -164,6 +150,7 @@ fun Screen(navController: NavController) {
                                             submit = {
                                                 speciesName?.let { specie ->
                                                     viewModel.savePetInformation(specie)
+                                                    navController.navigate("pets/nameAndGender/0")
                                                 }
                                             },
                                             modifier = Modifier.width(150.dp),

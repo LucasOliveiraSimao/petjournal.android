@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "guardian_profile")
 data class GuardianProfile(
-    @PrimaryKey val id: Int = 1,
+    @PrimaryKey val id: String = "0",
     val firstName: String? = null,
     val lastName: String? = null,
     val email: String? = null,

@@ -35,7 +35,7 @@ abstract class ViewModelRaceSize : ViewModel() {
         petSize: String? = null,
         petRaceOthers: String? = null,
     )
-    abstract fun getPetInformation(id: Long)
+    abstract fun getPetInformation(id: String)
     abstract fun updatePetInformation()
 
     abstract fun successPetUpdate(unit: Unit)

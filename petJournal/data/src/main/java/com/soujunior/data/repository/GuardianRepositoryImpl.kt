@@ -7,6 +7,7 @@ import com.petjournal.database.converter.Converter.toResponse
 import com.soujunior.data.remote.GuardianService
 import com.soujunior.data.util.manager.JwtManager
 import com.soujunior.data.util.toPetInformationItemList
+import com.soujunior.data.util.toPetInformationModelList
 import com.soujunior.domain.model.PetInformationModel
 import com.soujunior.domain.model.request.PetRaceItemModel
 import com.soujunior.domain.model.request.PetSizeItemModel
@@ -14,8 +15,6 @@ import com.soujunior.domain.model.response.GuardianNameResponse
 import com.soujunior.domain.model.response.PetInformationDeleted
 import com.soujunior.domain.model.response.pet_information.PetInformationItem
 import com.soujunior.domain.network.NetworkResult
-import com.soujunior.domain.network.onError
-import com.soujunior.domain.network.onException
 import com.soujunior.domain.network.onSuccess
 import com.soujunior.domain.repository.GuardianLocalDataSource
 import com.soujunior.domain.repository.GuardianRepository
@@ -53,7 +52,7 @@ class GuardianRepositoryImpl(
     }
 
     override suspend fun savePetInformation(petInformationModel: PetInformationModel): DataResult<Long> {
-        val guardianId = 1
+        val guardianId = "0"
         val petInformation = petInformationModel.copy(
             species = petInformationModel.species,
             guardianId = guardianId
@@ -65,7 +64,7 @@ class GuardianRepositoryImpl(
         }
     }
 
-    override suspend fun getPetInformation(idPetInformation: Long): DataResult<PetInformationModel> {
+    override suspend fun getPetInformation(idPetInformation: String): DataResult<PetInformationModel> {
         return try {
             DataResult.Success(guardianLocalDataSourceImpl.getPetInformation(idPetInformation).success.data)
         } catch (e: Throwable) {
@@ -83,12 +82,10 @@ class GuardianRepositoryImpl(
 
     override suspend fun deletePetInformation(idPetInformation: String): NetworkResult<PetInformationDeleted> {
         return try {
-            Log.i("MyTag","idPetInformation: $idPetInformation")
             val token = "Bearer " + jwtManager.getToken()
             val apiResult = guardianApi.deletePetInformation(token, idPetInformation.toString())
             apiResult.onSuccess {
-                Log.i("MyTag","apiResult: ${it.petId!!.toLong()}")
-                guardianLocalDataSourceImpl.deletePetInformation(it.petId!!.toLong())
+                guardianLocalDataSourceImpl.deletePetInformation(it.petId!!)
                 return@onSuccess
             }
 
@@ -97,6 +94,14 @@ class GuardianRepositoryImpl(
 
         }
 
+    }
+
+    override suspend fun deleteAllPetInformation(): DataResult<Unit> {
+        return try {
+            DataResult.Success(guardianLocalDataSourceImpl.deleteAllPetInformation().success.data)
+        } catch (e: Throwable) {
+            DataResult.Failure(e)
+        }
     }
 
     override suspend fun getListPetSizes(petSpecie: String): NetworkResult<List<PetSizeItemModel>> {
@@ -158,26 +163,19 @@ class GuardianRepositoryImpl(
         } else {
             val token = "Bearer " + jwtManager.getToken()
 
-            val apiResult = guardianApi.getAllPetInformation(token)
-
-            apiResult.onSuccess {
-                Log.i("API", "$it")
-            }
-
-            apiResult.onError { code, body ->
-                Log.i("API", "$body")
-            }
-
-            apiResult.onException {
-                Log.i("API", "$it")
-            }
-
             when (val apiResult = guardianApi.getAllPetInformation(token)) {
                 is NetworkResult.Success -> {
+                    guardianLocalDataSourceImpl.insertPetInformationList(apiResult.data.toPetInformationModelList())
                     NetworkResult.Success(apiResult.data)
                 }
 
-                else -> apiResult
+                is NetworkResult.Exception -> {
+                    NetworkResult.Exception(apiResult.e)
+                }
+
+                is NetworkResult.Error -> {
+                    NetworkResult.Error(apiResult.code, apiResult.body)
+                }
             }
 
         }

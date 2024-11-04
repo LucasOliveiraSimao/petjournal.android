@@ -13,7 +13,7 @@ import com.petjournal.database.database.entity.PetSize
 @Database(
     entities = [GuardianProfile::class, ApplicationInformation::class, PetInformation::class,
         PetSize::class, PetRace::class],
-    version = 5, exportSchema = false
+    version = 7, exportSchema = false
 )
 
 abstract class AppDatabase : RoomDatabase() {

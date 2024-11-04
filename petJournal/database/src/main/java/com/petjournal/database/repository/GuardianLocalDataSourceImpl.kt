@@ -9,13 +9,14 @@ import com.petjournal.database.database.dao.ApplicationInformationDao
 import com.petjournal.database.database.dao.GuardianProfileDao
 import com.petjournal.database.database.entity.ApplicationInformation
 import com.petjournal.database.database.entity.GuardianProfile
+import com.petjournal.database.util.toPetInformationList
+import com.petjournal.database.util.toPetInformationModel
 import com.soujunior.domain.model.PetInformationModel
 import com.soujunior.domain.model.request.PetRaceItemModel
 import com.soujunior.domain.model.request.PetSizeItemModel
 import com.soujunior.domain.model.response.GuardianNameResponse
 import com.soujunior.domain.repository.GuardianLocalDataSource
 import com.soujunior.domain.use_case.base.DataResult
-import kotlinx.coroutines.flow.Flow
 
 class GuardianLocalDataSourceImpl(
     private val guardianDao: GuardianProfileDao,
@@ -30,7 +31,7 @@ class GuardianLocalDataSourceImpl(
         if (getGuardianName() == null) {
             guardianDao.insertProfile(
                 GuardianProfile(
-                    id = 1,
+                    id = "0",
                     firstName = response.firstName,
                     lastName = response.lastName
                 )
@@ -51,7 +52,6 @@ class GuardianLocalDataSourceImpl(
         } catch (e: Throwable) {
             DataResult.Failure(e)
         }
-
     }
 
     override suspend fun getAllPetInformation(): DataResult<List<PetInformationModel>> {
@@ -62,7 +62,15 @@ class GuardianLocalDataSourceImpl(
         }
     }
 
-    override suspend fun deletePetInformation(id: Long): DataResult<Unit> {
+    override suspend fun insertPetInformationList(petInformationList: List<PetInformationModel>): DataResult<Unit> {
+        return try {
+            DataResult.Success(guardianDao.insertPetInformationList(petInformationList.toPetInformationList()))
+        } catch (e: Throwable) {
+            DataResult.Failure(e)
+        }
+    }
+
+    override suspend fun deletePetInformation(id: String): DataResult<Unit> {
         return try {
             DataResult.Success(guardianDao.deletePetInformation(id))
         } catch (e: Throwable) {
@@ -70,9 +78,18 @@ class GuardianLocalDataSourceImpl(
         }
     }
 
-    override suspend fun getPetInformation(id: Long): DataResult<PetInformationModel> {
+    override suspend fun deleteAllPetInformation(): DataResult<Unit> {
         return try {
-            DataResult.Success(guardianDao.getPetInformation(id))
+            DataResult.Success(guardianDao.deleteAllPetInformation())
+        } catch (e: Throwable) {
+            DataResult.Failure(e)
+        }
+    }
+
+    override suspend fun getPetInformation(id: String): DataResult<PetInformationModel> {
+        return try {
+            val petInformation = guardianDao.getPetInformation(id)
+            DataResult.Success(petInformation.toPetInformationModel())
         } catch (e: Throwable) {
             DataResult.Failure(e)
         }

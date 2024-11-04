@@ -19,21 +19,21 @@ object Converter {
             petRace = this.petRace,
             petAge = this.petAge,
             guardianId = this.guardianId,
-            castrated = this.castration
+            castration = this.castration
         )
     }
 
     fun PetInformationModel.toEntity(): PetInformation {
         return PetInformation(
             id = this.id,
-            guardianId = this.guardianId ?: 0,
+            guardianId = this.guardianId!!,
             species = this.species,
             name = this.name,
             gender = this.gender,
             size = this.size,
             petRace = this.petRace,
             petAge = this.petAge,
-            castration = this.castrated
+            castration = this.castration
         )
     }
     fun PetInformationModel.toResponse(): PetInformationResponse {
@@ -43,7 +43,7 @@ object Converter {
             gender = this.gender,
             breedName = this.petRace,
             size = this.size,
-            castrated = this.castrated,
+            castrated = this.castration,
             dateOfBirth = this.petAge
         )
     }

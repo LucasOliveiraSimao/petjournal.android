@@ -2,6 +2,8 @@ package com.soujunior.petjournal.ui.util
 
 import java.util.Date
 import java.text.SimpleDateFormat
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
@@ -33,8 +35,7 @@ fun formatAge(age: Pair<Int, Int>): String {
 }
 
 private fun convertToTimestamp(dateString: String): Long {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.getDefault())
-    dateFormat.timeZone = TimeZone.getTimeZone("UTC")
-    val date: Date? = dateFormat.parse(dateString)
-    return date?.time ?: throw IllegalArgumentException("Invalid date format")
+    val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+    val dateTime = OffsetDateTime.parse(dateString, formatter)
+    return dateTime.toInstant().toEpochMilli()
 }

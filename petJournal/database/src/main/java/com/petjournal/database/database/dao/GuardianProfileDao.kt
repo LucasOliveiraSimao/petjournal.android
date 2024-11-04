@@ -27,13 +27,19 @@ interface GuardianProfileDao {
     suspend fun insertPetInformation(petInformation: PetInformation): Long
 
     @Query("SELECT * FROM pet_information WHERE id = :id")
-    suspend fun getPetInformation(id: Long): PetInformationModel
+    suspend fun getPetInformation(id: String): PetInformation
 
     @Query("SELECT * FROM pet_information")
-    suspend fun getAllPetInformation() : List<PetInformationModel>
+    suspend fun getAllPetInformation(): List<PetInformationModel>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPetInformationList(petInformationList: List<PetInformation>)
 
     @Query("DELETE FROM pet_information WHERE id =:id")
-    suspend fun deletePetInformation(id: Long)
+    suspend fun deletePetInformation(id: String)
+
+    @Query("DELETE FROM pet_information")
+    suspend fun deleteAllPetInformation()
 
     @Update
     fun updatePetInformation(petInformation: PetInformation)

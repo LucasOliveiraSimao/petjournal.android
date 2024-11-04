@@ -17,7 +17,7 @@ import androidx.room.PrimaryKey
 )
 data class PetInformation(
     @PrimaryKey val id: String,
-    val guardianId: Int,
+    val guardianId: String,
     val species: String? = null,
     val name: String? = null,
     val gender: String? = null,

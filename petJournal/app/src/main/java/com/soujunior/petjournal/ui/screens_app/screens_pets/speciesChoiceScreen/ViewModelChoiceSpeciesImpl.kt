@@ -42,7 +42,7 @@ class ViewModelChoiceSpeciesImpl(
         return listOf(result).any { !it.success }
     }
 
-    private fun setIdPetInformation(id: Long) {
+    private fun setIdPetInformation(id: String) {
         state = state.copy(idRoomPetInformation = id)
         viewModelScope.launch {
             validationEventChannel.send(ValidationEvent.Success)
@@ -101,7 +101,6 @@ class ViewModelChoiceSpeciesImpl(
     }
 
     override fun savePetInformation(specie: String) {
-
         val petInformation = PetInformationModel(
             id = "0",
             species = specie

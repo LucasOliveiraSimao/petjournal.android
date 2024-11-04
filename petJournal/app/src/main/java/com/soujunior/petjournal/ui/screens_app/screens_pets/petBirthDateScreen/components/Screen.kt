@@ -50,8 +50,8 @@ fun Screen(idPetInformation: String?, navController: NavController) {
     val taskState by viewModel.taskState.collectAsState()
     var isClearCastration by remember { mutableStateOf(false) }
     if (idPetInformation != null) {
-        viewModel.getPetInformation(idPetInformation.toLong())
-        RaceSizeFormEvent.IdPetInformation(idPetInformation = idPetInformation.toLong())
+        viewModel.getPetInformation(idPetInformation)
+        RaceSizeFormEvent.IdPetInformation(idPetInformation = idPetInformation)
     }
     Column(modifier = Modifier.navigationBarsPadding()) {
         ScaffoldCustom(
@@ -156,9 +156,9 @@ fun Screen(idPetInformation: String?, navController: NavController) {
                                                 viewModel.state.castration != null
                                             ) {
                                                 viewModel.updatePetInformation()
-                                                navController.navigate("pets/registeredPets")
                                                 viewModel.createPetInformation()
-                                                //navController.navigate("pets/birth/$it")
+                                                viewModel.deleteAllPetInformation()
+                                                navController.navigate("pets/registeredPets")
                                             }
                                         },
                                         enableButton = viewModel.enableButton(),

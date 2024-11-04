@@ -169,7 +169,7 @@ class ViewModelRaceSizeImpl(
         }
     }
 
-    override fun getPetInformation(id: Long) {
+    override fun getPetInformation(id: String) {
         viewModelScope.launch {
             val result = getPetInformationUseCase.execute(id)
             result.handleResult(::success, ::failed)
@@ -183,13 +183,13 @@ class ViewModelRaceSizeImpl(
         _taskState.value = TaskState.Loading
         viewModelScope.launch {
             val petInformation = PetInformationModel(
-                id = state.idPetInformation ?: "0L",
+                id = state.idPetInformation ?: "0",
                 species = state.specie,
                 name = state.name,
                 gender = state.gender,
                 size = state.size,
                 petRace = petRace,
-                guardianId = 1
+                guardianId = "0"
             )
 
             val result = updatePetInformationUseCase.execute(petInformation)

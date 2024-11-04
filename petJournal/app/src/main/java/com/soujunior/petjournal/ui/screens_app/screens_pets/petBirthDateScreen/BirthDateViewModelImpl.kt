@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.soujunior.domain.model.PetInformationModel
 import com.soujunior.domain.repository.ValidationRepository
 import com.soujunior.domain.use_case.pet.CreatePetInformationApiUseCase
+import com.soujunior.domain.use_case.pet.DeleteAllPetInformationUseCase
 import com.soujunior.domain.use_case.pet.GetPetInformationUseCase
 import com.soujunior.domain.use_case.pet.UpdatePetInformationUseCase
 import com.soujunior.petjournal.ui.states.TaskState
@@ -25,7 +26,8 @@ class BirthDateViewModelImpl(
     val validation: ValidationRepository,
     private val getPetInformationUseCase: GetPetInformationUseCase,
     private val updatePetInformationUseCase: UpdatePetInformationUseCase,
-    private val createPetInformationApiUseCase: CreatePetInformationApiUseCase
+    private val createPetInformationApiUseCase: CreatePetInformationApiUseCase,
+    private val deleteAllPetInformationUseCase: DeleteAllPetInformationUseCase
 ) : BirthDateViewModel() {
 
     override var state by mutableStateOf(BirthDateFormState())
@@ -98,7 +100,7 @@ class BirthDateViewModelImpl(
         }
     }
 
-    override fun getPetInformation(id: Long) {
+    override fun getPetInformation(id: String) {
         viewModelScope.launch {
             _taskState.value = TaskState.Loading
             val result = getPetInformationUseCase.execute(id)
@@ -111,14 +113,14 @@ class BirthDateViewModelImpl(
     override fun updatePetInformation() {
         viewModelScope.launch {
             val petInformation = PetInformationModel(
-                id = state.idPetInformation ?: "0L",
+                id = state.idPetInformation ?: "0",
                 species = state.specie,
                 name = state.name,
                 gender = state.gender,
                 size = state.size,
                 petRace = state.race,
                 petAge = formatToIso8601(state.birth),
-                guardianId = 1
+                guardianId = "0"
             )
 
             val result = updatePetInformationUseCase.execute(petInformation)
@@ -130,19 +132,25 @@ class BirthDateViewModelImpl(
         _taskState.value = TaskState.Loading
         viewModelScope.launch {
             val petInformation = PetInformationModel(
-                id = state.idPetInformation ?: "0L",
+                id = state.idPetInformation ?: "0",
                 species = state.specie,
                 name = state.name,
                 gender = state.gender,
                 size = state.size,
                 petRace = state.race,
                 petAge = formatToIso8601(state.birth),
-                guardianId = 1,
-                castrated = state.castration
+                guardianId = "0",
+                castration = state.castration
             )
             val result = createPetInformationApiUseCase.execute(petInformation)
             result.handleResult(::successPetUpdate, ::failed)
             _taskState.value = TaskState.Idle
+        }
+    }
+
+    override fun deleteAllPetInformation() {
+        viewModelScope.launch {
+            deleteAllPetInformationUseCase.execute(Unit)
         }
     }
 
@@ -155,7 +163,7 @@ class BirthDateViewModelImpl(
 
 
     private fun formatToIso8601(date: String): String {
-        if (date.isNotEmpty()){
+        if (date.isNotEmpty()) {
             val dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy")
             val dateF = LocalDate.parse(date, dateFormatter)
             val localDateTime = dateF.atStartOfDay()

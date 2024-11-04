@@ -54,7 +54,7 @@ fun Screen(idPetInformation: String?, navController: NavController) {
     val taskState by viewModel.taskState.collectAsState()
     var isClearGender by remember { mutableStateOf(false) }
     if (idPetInformation != null) {
-        viewModel.getPetInformation(idPetInformation.toLong())
+        viewModel.getPetInformation(idPetInformation)
     }
     val specieName: Int = when (viewModel.state.specie) {
         DOG -> R.string.dog
@@ -117,9 +117,9 @@ fun Screen(idPetInformation: String?, navController: NavController) {
                                         textError = viewModel.state.nameError,
                                         isError = !viewModel.state.nameError.isNullOrEmpty(),
                                         titleText = "Nome: ",
-                                        onEvent = { it: String ->
+                                        onEvent = { name: String ->
                                             viewModel.onEvent(
-                                                NameGenderFormEvent.PetName(it)
+                                                NameGenderFormEvent.PetName(name)
                                             )
                                         }
                                     )
