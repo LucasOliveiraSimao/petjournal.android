@@ -49,9 +49,13 @@ fun Screen(navController: NavController) {
     val taskState by viewModel.taskState.collectAsState()
     var showDeleteDialog by remember { mutableStateOf(false) }
     var actualPetId: String by remember { mutableStateOf("") }
+
     val pullRefreshState = rememberPullRefreshState(
         refreshing = taskState is TaskState.Loading,
-        onRefresh = viewModel::deleteAllPetInformation
+        onRefresh = {
+            viewModel.deleteAllPetInformation()
+            viewModel.getAllPetInformation()
+        }
     )
 
     ScaffoldCustom(modifier = Modifier.navigationBarsPadding(),
