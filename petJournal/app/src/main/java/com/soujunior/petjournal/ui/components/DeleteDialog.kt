@@ -4,23 +4,30 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun DeleteDialog(
-    onDismissRequest: ()-> Unit,
-    onConfirmation: ()-> Unit,
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit,
     dialogTitle: String,
     dialogText: String,
-){
+) {
     AlertDialog(
         onDismissRequest = { onDismissRequest() },
         confirmButton = {
-            TextButton(onClick = {
-                onConfirmation()
-                onDismissRequest()
-            }) {
-                Text(text = "Confirmar")
+            TextButton(
+                onClick = {
+                    onConfirmation()
+                    onDismissRequest()
+                },
+                modifier = Modifier.testTag("ConfirmButton")
+            ) {
+                Text(
+                    text = "Confirmar",
+                )
             }
         },
         dismissButton = {
@@ -36,7 +43,7 @@ fun DeleteDialog(
 
 @Preview
 @Composable
-fun PreviewDialog(){
+fun PreviewDialog() {
     DeleteDialog({}, {}, "Deletar Card", "Deseja mesmo deletar as informações deste pet?")
 }
 

@@ -1,5 +1,6 @@
 package com.soujunior.petjournal.registeredPetScreen
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,9 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -37,75 +40,6 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class RegisteredPetScreenTest {
 
-    private val list = listOf(
-        PetInformationItem(
-            id = "1",
-            guardianId = "G001",
-            specie = Specie(null, null),
-            specieAlias = "Canine",
-            petName = "Buddy",
-            gender = "Male",
-            breedAlias = "Labrador",
-            breed = Breed(null, null),
-            size = Size(null, null),
-            castrated = true,
-            dateOfBirth = "2018-04-15"
-        ),
-        PetInformationItem(
-            id = "2",
-            guardianId = "G002",
-            specie = Specie(null, null),
-            specieAlias = "Feline",
-            petName = "Whiskers",
-            gender = "Female",
-            breedAlias = "Siamese",
-            breed = Breed(null, null),
-            size = Size(null, null),
-            castrated = false,
-            dateOfBirth = "2020-08-10"
-        ),
-        PetInformationItem(
-            id = "3",
-            guardianId = "G003",
-            specie = Specie(null, null),
-            specieAlias = "Avian",
-            petName = "Sky",
-            gender = "Male",
-            breedAlias = "Parrot",
-            breed = Breed(null, null),
-            size = Size(null, null),
-            castrated = null,
-            dateOfBirth = "2019-03-25"
-        ),
-        PetInformationItem(
-            id = "4",
-            guardianId = "G004",
-            specie = Specie(null, null),
-            specieAlias = "Canine",
-            petName = "Max",
-            gender = "Male",
-            breedAlias = "German Shepherd",
-            breed = Breed(null, null),
-            size = Size(null, null),
-            castrated = true,
-            dateOfBirth = "2017-12-05"
-        ),
-        PetInformationItem(
-            id = "5",
-            guardianId = "G005",
-            specie = Specie(null, null),
-            specieAlias = "Feline",
-            petName = "Mittens",
-            gender = "Female",
-            breedAlias = "Persian",
-            breed = Breed(null, null),
-            size = Size(null, null),
-            castrated = true,
-            dateOfBirth = "2019-06-20"
-        )
-    )
-
-
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -119,11 +53,84 @@ class RegisteredPetScreenTest {
     fun when_adding_newPet_should_show_inTheList() {
 
         composeTestRule.setContent {
+
+            val petList by remember {
+                mutableStateOf(
+                    listOf(
+                        PetInformationItem(
+                            id = "1",
+                            guardianId = "G001",
+                            specie = Specie(null, null),
+                            specieAlias = "Canine",
+                            petName = "Buddy",
+                            gender = "Male",
+                            breedAlias = "Labrador",
+                            breed = Breed(null, null),
+                            size = Size(null, null),
+                            castrated = true,
+                            dateOfBirth = "2024-09-16T00:00:00.000Z"
+                        ),
+                        PetInformationItem(
+                            id = "2",
+                            guardianId = "G002",
+                            specie = Specie(null, null),
+                            specieAlias = "Feline",
+                            petName = "Whiskers",
+                            gender = "Female",
+                            breedAlias = "Siamese",
+                            breed = Breed(null, null),
+                            size = Size(null, null),
+                            castrated = false,
+                            dateOfBirth = "2024-09-16T00:00:00.000Z"
+                        ),
+                        PetInformationItem(
+                            id = "3",
+                            guardianId = "G003",
+                            specie = Specie(null, null),
+                            specieAlias = "Avian",
+                            petName = "Sky",
+                            gender = "Male",
+                            breedAlias = "Parrot",
+                            breed = Breed(null, null),
+                            size = Size(null, null),
+                            castrated = null,
+                            dateOfBirth = "2024-09-16T00:00:00.000Z"
+                        ),
+                        PetInformationItem(
+                            id = "4",
+                            guardianId = "G004",
+                            specie = Specie(null, null),
+                            specieAlias = "Canine",
+                            petName = "Max",
+                            gender = "Male",
+                            breedAlias = "German Shepherd",
+                            breed = Breed(null, null),
+                            size = Size(null, null),
+                            castrated = true,
+                            dateOfBirth = "2024-09-16T00:00:00.000Z"
+                        ),
+                        PetInformationItem(
+                            id = "5",
+                            guardianId = "G005",
+                            specie = Specie(null, null),
+                            specieAlias = "Feline",
+                            petName = "Mittens",
+                            gender = "Female",
+                            breedAlias = "Persian",
+                            breed = Breed(null, null),
+                            size = Size(null, null),
+                            castrated = true,
+                            dateOfBirth = "2024-09-16T00:00:00.000Z"
+                        )
+                    )
+                )
+            }
+
             LazyColumn(
                 modifier = Modifier.testTag("ListOfPets")
             ) {
                 items(
-                    items = list,
+                    items = petList,
                     itemContent = { item ->
                         PetItemCard(
                             item,
@@ -137,8 +144,6 @@ class RegisteredPetScreenTest {
                                     },
                                 )
                         )
-
-
                     })
             }
         }
@@ -150,12 +155,87 @@ class RegisteredPetScreenTest {
     fun longClick_removesItemFromList() {
 
         composeTestRule.setContent {
+
+            var petList by remember {
+                mutableStateOf(
+                    listOf(
+                        PetInformationItem(
+                            id = "1",
+                            guardianId = "G001",
+                            specie = Specie(null, null),
+                            specieAlias = "Canine",
+                            petName = "Buddy",
+                            gender = "Male",
+                            breedAlias = "Labrador",
+                            breed = Breed(null, null),
+                            size = Size(null, null),
+                            castrated = true,
+                            dateOfBirth = "2024-09-16T00:00:00.000Z"
+                        ),
+                        PetInformationItem(
+                            id = "2",
+                            guardianId = "G002",
+                            specie = Specie(null, null),
+                            specieAlias = "Feline",
+                            petName = "Whiskers",
+                            gender = "Female",
+                            breedAlias = "Siamese",
+                            breed = Breed(null, null),
+                            size = Size(null, null),
+                            castrated = false,
+                            dateOfBirth = "2024-09-16T00:00:00.000Z"
+                        ),
+                        PetInformationItem(
+                            id = "3",
+                            guardianId = "G003",
+                            specie = Specie(null, null),
+                            specieAlias = "Avian",
+                            petName = "Sky",
+                            gender = "Male",
+                            breedAlias = "Parrot",
+                            breed = Breed(null, null),
+                            size = Size(null, null),
+                            castrated = null,
+                            dateOfBirth = "2024-09-16T00:00:00.000Z"
+                        ),
+                        PetInformationItem(
+                            id = "4",
+                            guardianId = "G004",
+                            specie = Specie(null, null),
+                            specieAlias = "Canine",
+                            petName = "Max",
+                            gender = "Male",
+                            breedAlias = "German Shepherd",
+                            breed = Breed(null, null),
+                            size = Size(null, null),
+                            castrated = true,
+                            dateOfBirth = "2024-09-16T00:00:00.000Z"
+                        ),
+                        PetInformationItem(
+                            id = "5",
+                            guardianId = "G005",
+                            specie = Specie(null, null),
+                            specieAlias = "Feline",
+                            petName = "Mittens",
+                            gender = "Female",
+                            breedAlias = "Persian",
+                            breed = Breed(null, null),
+                            size = Size(null, null),
+                            castrated = true,
+                            dateOfBirth = "2024-09-16T00:00:00.000Z"
+                        )
+                    )
+                )
+            }
+
             var showDeleteDialog by remember { mutableStateOf(false) }
+            var petToDelete by remember { mutableStateOf<PetInformationItem?>(null) }
+
             LazyColumn(
                 modifier = Modifier.testTag("ListOfPets")
             ) {
                 items(
-                    items = list,
+                    items = petList,
                     itemContent = { item ->
                         PetItemCard(
                             item,
@@ -168,26 +248,38 @@ class RegisteredPetScreenTest {
 
                                     },
                                     onLongClick = {
+                                        petToDelete = item
                                         showDeleteDialog = true
                                     }
                                 )
+                                .testTag("PetItem")
                         )
 
 
                     })
             }
 
-            DeleteDialog(
-                onDismissRequest = { showDeleteDialog = false },
-                onConfirmation = { list.toMutableList().removeAt(0) },
-                dialogTitle = "Deletar Card",
-                dialogText = "Deseja mesmo deletar as informações deste pet?"
+            if (showDeleteDialog) {
+                DeleteDialog(
+                    onDismissRequest = { showDeleteDialog = false },
+                    onConfirmation = {
+                        petList = petList.filter { it.id != petToDelete!!.id }
+                        showDeleteDialog = false
+                    },
+                    dialogTitle = "Deletar Card",
+                    dialogText = "Deseja mesmo deletar as informações deste pet?"
+                )
+            }
+        }
+
+        composeTestRule.onAllNodesWithTag("PetItem")[0].performTouchInput {
+            longClick(
+                center,
+                5000
             )
         }
-        composeTestRule.onNodeWithTag("ListOfPets").assertExists()
-        composeTestRule.onAllNodesWithTag("ListOfPets")[0].performTouchInput {
-            longClick()
-        }
-//        composeTestRule.onAllNodesWithTag("ListOfPets").assertCountEquals(4)
+
+        composeTestRule.onNodeWithTag("ConfirmButton", true).assertExists()
+        composeTestRule.onNodeWithTag("ConfirmButton").performClick()
     }
 }
