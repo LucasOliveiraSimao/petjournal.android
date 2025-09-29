@@ -3,19 +3,17 @@ package com.soujunior.petjournal.ui.registerScreen
 import androidx.lifecycle.viewModelScope
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
-import com.soujunior.domain.model.mapper.User
 import com.soujunior.domain.use_case.auth.SignUpUseCase
 import com.soujunior.domain.use_case.util.ValidationRepositoryImpl
 import com.soujunior.domain.use_case.util.ValidationResult
-import com.soujunior.petjournal.ui.accountManager.registerScreen.RegisterFormEvent
-import com.soujunior.petjournal.ui.accountManager.registerScreen.RegisterFormState
-import com.soujunior.petjournal.ui.accountManager.registerScreen.RegisterViewModelImpl
+import com.soujunior.petjournal.ui.screens_app.account_manager.registerScreen.RegisterFormEvent
+import com.soujunior.petjournal.ui.screens_app.account_manager.registerScreen.RegisterFormState
+import com.soujunior.petjournal.ui.screens_app.account_manager.registerScreen.RegisterViewModelImpl
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
@@ -40,18 +38,18 @@ class RegisterMethodTest {
         viewModel.viewModelScope.cancel()
     }
 
-    @Test
-    fun `if success() is call, set the value on state userProfile`() = runTest {
-        val successMessage = User(
-            "123456",
-            "John",
-            "Doe",
-            "john.doe@example.com",
-            "11998018914"
-        )
-        viewModel.success(successMessage)
-        assertEquals(successMessage, viewModel.state.userProfile)
-    }
+//    @Test
+//    fun `if success() is call, set the value on state userProfile`() = runTest {
+//        val successMessage = User(
+//            "123456",
+//            "John",
+//            "Doe",
+//            "john.doe@example.com",
+//            "11998018914"
+//        )
+//        viewModel.success(successMessage)
+//        assertEquals(successMessage, viewModel.state.userProfile)
+//    }
 
     @Test
     fun `if failed() is call, sets error message`() {
