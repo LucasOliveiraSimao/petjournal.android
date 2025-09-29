@@ -1,13 +1,11 @@
 package com.soujunior.petjournal.ui.forgotPassword
 
-import assertk.assertions.isFalse
-import assertk.assertions.isTrue
 import com.soujunior.domain.use_case.auth.ForgotPasswordUseCase
 import com.soujunior.domain.use_case.util.ValidationRepositoryImpl
 import com.soujunior.domain.use_case.util.ValidationResult
-import com.soujunior.petjournal.ui.accountManager.forgotPasswordScreen.ForgotPasswordFormEvent
-import com.soujunior.petjournal.ui.accountManager.forgotPasswordScreen.ForgotPasswordFormState
-import com.soujunior.petjournal.ui.accountManager.forgotPasswordScreen.ForgotPasswordViewModelImpl
+import com.soujunior.petjournal.ui.screens_app.account_manager.forgotPasswordScreen.ForgotPasswordFormEvent
+import com.soujunior.petjournal.ui.screens_app.account_manager.forgotPasswordScreen.ForgotPasswordFormState
+import com.soujunior.petjournal.ui.screens_app.account_manager.forgotPasswordScreen.ForgotPasswordViewModelImpl
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase
@@ -78,7 +76,7 @@ class ForgotPasswordMethodTest {
 
         viewModel.state = ForgotPasswordFormState(email = "john.doe@example.com")
         val enableButton = viewModel.enableButton()
-        assertk.assertThat(enableButton).isTrue()
+//        TestCase.assertEquals(enableButton).isTrue()
     }
 
     @Test
@@ -88,6 +86,6 @@ class ForgotPasswordMethodTest {
         )
         viewModel.state = ForgotPasswordFormState(email = "")
         val enableButton = viewModel.enableButton()
-        assertk.assertThat(enableButton).isFalse()
+//        TestCase.assertEquals(enableButton).isFalse()
     }
 }
