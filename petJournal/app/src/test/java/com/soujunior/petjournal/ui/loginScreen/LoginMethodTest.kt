@@ -5,9 +5,6 @@ import com.soujunior.domain.use_case.auth.LoginUseCase
 import com.soujunior.domain.use_case.util.ValidationRepositoryImpl
 import com.soujunior.domain.use_case.util.ValidationResult
 import com.soujunior.domain.use_case.base.DataResult
-import com.soujunior.petjournal.ui.accountManager.loginScreen.LoginFormEvent
-import com.soujunior.petjournal.ui.accountManager.loginScreen.LoginFormState
-import com.soujunior.petjournal.ui.accountManager.loginScreen.LoginViewModelImpl
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
